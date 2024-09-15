@@ -11,16 +11,21 @@ namespace EfLinqApp
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
-        public DateTime? BirthDay { get; set; }
+        public DateTime BirthDay { get; set; }
+        
+        public int? CompanyId { get; set; }
         public Company? Company { get; set; }
+        
+        public int? PositionId { get; set; }
         public Position? Position { get; set; }
 
         public override string ToString()
         {
-            string name = $"Name: {Name} ({BirthDay.ToString()})";
-            string company = $"Company: {Company?.Title} ({Company?.Country?.Title})";
-            string position = $"Position: {Position?.Title}";
-            return $"{name}\n\t{company}\n\t{position}";
+            string name = $"Name: {Name} ({BirthDay.ToShortDateString()})";
+            string country = (Company is not null) ? ((Company.Country is not null) ? Company.Country.Title : "") : "";
+            string company = (Company is not null) ? $"\n\tCompany: {Company?.Title} ({country})" : "";
+            string position = (Position is not null) ? $"\n\tPosition: {Position?.Title}" : "";
+            return $"{name}{company}{position}";
         }
     }
 }

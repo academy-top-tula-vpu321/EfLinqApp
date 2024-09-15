@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -136,6 +137,22 @@ namespace EfLinqApp
 
                 context.SaveChanges();
 
+            }
+        }
+
+        public static void PrintEmployees()
+        {
+            using (CompaniesDbContext context = new())
+            {
+                var employees = context.Employees
+                                       .Include(e => e.Company)
+                                            .ThenInclude(c => c.Country)
+                                       .Include(e => e.Position)
+                                       .ToList();
+
+                foreach(var e in employees)
+                    Console.WriteLine(e);
+                Console.WriteLine();
             }
         }
     }
